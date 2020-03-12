@@ -6,7 +6,7 @@
 1. [Week 1 - Toolchain](docs/w1-toolchain.md)
 1. [Week 1 - First app](docs/w1-first-app.md) -- http://users.metropolia.fi/~lottalau/mpjakk/first-app/
 1. [Week 1 - Postman](docs/w1-postman.md)
-1. [Week 1 - AJAX, State](docs/w1-http.md)
+1. [Week 1 - AJAX, State](docs/w1-http.md) -- http://users.metropolia.fi/~lottalau/mpjakk/http/
 1. [Week 2 - AJAX, Route](docs/w2-http+route.md)
 1. [Week 2 - Routing & login](docs/w2-login.md)
 1. [Week 3 - Material-UI](docs/w3-Material-UI.md)
