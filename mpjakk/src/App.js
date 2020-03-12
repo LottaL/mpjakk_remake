@@ -4,6 +4,8 @@ import './App.css';
 
 import CatTable from './Components/CatTable';
 
+import axios from 'axios';
+
 const picArray = [
   {
     'title': 'Title 1',
@@ -36,24 +38,66 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      url: 'http://media.mw.metropolia.fi/wbma/media'
     }
   }
 
   componentDidMount() {
-    fetch('test.json')
+    /*fetch('test.json')
     .then(res => res.json())
     .then((res) => {
       this.setState({data: res});
       console.log(res);
+    })*/
+    fetch(this.state.url)
+    .then(res => res.json())
+    .then((res) => {
+      console.log(res);
+
+      Promise.all(res.map(item => {
+        //console.log(item.file_id);
+        return fetch(this.state.url + '/' + item.file_id).
+            then(response => response.json())
+      }))
+      .then(items => {
+        console.log(items);
+        this.setState({data: items});
+      });
     })
+    .catch(err => console.log(err));
+    
+    /*let promises = [],
+        array = [];
+    axios.get('http://media.mw.metropolia.fi/wbma/media')
+        .then(res => //this.setState({ picArray: res.data }))
+        {
+          //console.log(res.data);
+          //console.log(res.data[0].file_id);
+          res.data.map(a =>
+              {
+                let imgID = a.file_id;
+                //console.log(`http://media.mw.metropolia.fi/wbma/media/${imgID}`);
+                promises.push(axios.get(`http://media.mw.metropolia.fi/wbma/media/${imgID}`)
+                    .then(res2 => array.push(res2))
+                    .catch(err2 => console.log(err2))
+                )
+              }
+          );
+          Promise.all(promises).then(() => this.setState({ picArray: array}),
+          //console.log(this.state.picArray)
+        )
+        }
+        )
+        .catch(err => console.log(err))*/
+    
   }
 
   render() {
     return (
     <div className="App">
       <header className="App-header">
-        {this.state.data.map(i => <CatTable content={i}/>)}
+        {this.state.data.map(i => <CatTable key={i.file_id} content={i}/>)}
       </header>
     </div>
     )
