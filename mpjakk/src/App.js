@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -32,14 +32,32 @@ const picArray = [
   },
 ];
 
-function App() {
-  return (
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: []
+    }
+  }
+
+  componentDidMount() {
+    fetch('test.json')
+    .then(res => res.json())
+    .then((res) => {
+      this.setState({data: res});
+      console.log(res);
+    })
+  }
+
+  render() {
+    return (
     <div className="App">
       <header className="App-header">
-        {picArray.map(i => <CatTable content={i}/>)}
+        {this.state.data.map(i => <CatTable content={i}/>)}
       </header>
     </div>
-  );
+    )
+  };
 }
 
 export default App;
