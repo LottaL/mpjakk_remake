@@ -1,10 +1,20 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
+import {
+  BrowserRouter as Router,
+  Route
+} from 'react-router-dom'
+
 import './App.css';
 
 import CatTable from './Components/CatTable';
+import Nav from './Components/Nav';
+import { Home } from './views/Home';
+import { Profile } from './views/Profile';
+import Single from './views/Single';
 
 import axios from 'axios';
+import {getAllMedia} from './utils/MediaAPI';
+
 
 const picArray = [
   {
@@ -44,62 +54,27 @@ class App extends Component {
   }
 
   componentDidMount() {
-    /*fetch('test.json')
-    .then(res => res.json())
-    .then((res) => {
-      this.setState({data: res});
-      console.log(res);
-    })*/
-    fetch(this.state.url)
-    .then(res => res.json())
-    .then((res) => {
-      console.log(res);
-
-      Promise.all(res.map(item => {
-        //console.log(item.file_id);
-        return fetch(this.state.url + '/' + item.file_id).
-            then(response => response.json())
-      }))
-      .then(items => {
-        console.log(items);
-        this.setState({data: items});
-      });
-    })
-    .catch(err => console.log(err));
-    
-    /*let promises = [],
-        array = [];
-    axios.get('http://media.mw.metropolia.fi/wbma/media')
-        .then(res => //this.setState({ picArray: res.data }))
-        {
-          //console.log(res.data);
-          //console.log(res.data[0].file_id);
-          res.data.map(a =>
-              {
-                let imgID = a.file_id;
-                //console.log(`http://media.mw.metropolia.fi/wbma/media/${imgID}`);
-                promises.push(axios.get(`http://media.mw.metropolia.fi/wbma/media/${imgID}`)
-                    .then(res2 => array.push(res2))
-                    .catch(err2 => console.log(err2))
-                )
-              }
-          );
-          Promise.all(promises).then(() => this.setState({ picArray: array}),
-          //console.log(this.state.picArray)
-        )
-        }
-        )
-        .catch(err => console.log(err))*/
-    
+    getAllMedia().then(res => this.setState({data: res}));
   }
-
+//basename='/~lottalau/mpjakk'
   render() {
     return (
-    <div className="App">
-      <header className="App-header">
-        {this.state.data.map(i => <CatTable key={i.file_id} content={i}/>)}
-      </header>
-    </div>
+      <Router basename='/~lottalau/mpjakk/http-router'>
+        <div className="App">
+          <header className="App-header">
+            <Nav/>
+            <Route exact path="/" render={(props) => (
+                    <Home {...props} data={this.state.data}/>
+                )}/>
+            <Route exact path="/profile" render={(props) => (
+                    <Profile {...props} data={this.state.data}/>
+                )}/>
+            <Route exact path="/single" render={(props) => (
+                    <Single {...props} data={this.state.data}/>
+                )}/>
+          </header>
+        </div>
+      </Router>
     )
   };
 }

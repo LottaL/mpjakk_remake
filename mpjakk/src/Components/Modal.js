@@ -12,7 +12,7 @@ export default class Modal extends Component {
         return (
             <div className="Modal">
                 <button onClick={this.props.toggleModal}>x</button>
-                <img src={this.props.content.filename} alt={this.props.content.title}/>
+                <img src={'http://media.mw.metropolia.fi/wbma/uploads/' + this.props.content.filename} alt={this.props.content.title}/>
             </div>
         )
     }

@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import Modal from './Modal';
 
@@ -20,20 +21,16 @@ export default class CatRow extends Component {
         return (
             <div className="CatRow">
                 <td>
-                    <img src={this.props.content.thumbnails.w160} alt={this.props.content.title} />
+                    <img src={this.props.content.thumbnails ?
+                         'http://media.mw.metropolia.fi/wbma/uploads/' + this.props.content.thumbnails.w160 : ''} 
+                         alt={this.props.content.title} />
                 </td>
                 <td>
                     <h3>{this.props.content.title}</h3>
                     <p>{this.props.content.description}</p>
                 </td>
                 <td>
-                    <a onClick={this.toggleModalComponent}>View</a>
-        {/*<a href={this.props.content.filename}>View</a>*/}
-                    {this.state.modalOpen && 
-                        <Modal 
-                        content={this.props.content} 
-                        toggleModal={this.toggleModalComponent}/>
-                    }
+                    <Link to={{pathname: '/single', file_id: this.props.content.file_id}}>View</Link>
                 </td> 
             </div>         
         )
